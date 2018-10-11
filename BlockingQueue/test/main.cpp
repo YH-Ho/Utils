@@ -34,6 +34,9 @@ void *thread_2(BlockingQueue<int*> &queue) {
         }
     }
 
+    queue.clear();
+    cout<<"<Clear> queue size :"<<queue.size()<<endl;
+
     return nullptr;
 }
 

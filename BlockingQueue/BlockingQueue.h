@@ -66,6 +66,13 @@ public:
         return true;
     }
 
+    /* Clear the queue */
+    void clear() {
+        lock_guard<mutex> lk(m_mutex);
+        queue<shared_ptr<T>> empty;
+        swap(empty, m_queue);
+    }
+
     shared_ptr<T> wait_and_pop() {
         unique_lock<mutex> lk(m_mutex);
         m_de_cond.wait(lk, [this] { return !m_queue.empty(); });
@@ -88,7 +95,7 @@ public:
 private:
     mutable mutex m_mutex;
     size_t m_max_size;
-    queue<shared_ptr<T> > m_queue;
+    queue<shared_ptr<T>> m_queue;
     condition_variable m_de_cond;
     condition_variable m_en_cond;
 };
